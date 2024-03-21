@@ -37,6 +37,15 @@ class JobModel
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         )";
         $this->db->exec($query);
+
+        $query = "CREATE TABLE IF NOT EXISTS reject_reason (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    job_id INT NOT NULL,
+    reason VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )";
+        $this->db->exec($query);
     }
 
     public function postJob($employerId, $thumbnail, $salary, $position, $description, $numberOfPositions)
@@ -106,7 +115,26 @@ class JobModel
     }
 
     public function applyForJob($jobId, $userId, $content)
-    {
+{
+    try {
+        // Check if the user has already applied for this job
+        $stmt = $this->db->prepare("SELECT COUNT(*) AS count FROM job_requests WHERE job_id = ? AND user_id = ?");
+        $stmt->execute([$jobId, $userId]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result['count'] > 0) {
+            // User has already applied for this job, return error message
+            echo '<script>
+            Swal.fire({
+                title: "Error!",
+                text: "You have already applied for this job.",
+                icon: "error"
+            });
+            </script>';
+            return false;
+        }
+
+        // If user has not already applied, proceed with insertion
         $stmt = $this->db->prepare("INSERT INTO job_requests (job_id, user_id, content) VALUES (?, ?, ?)");
         $success = $stmt->execute([$jobId, $userId, $content]);
         if ($success) {
@@ -114,7 +142,15 @@ class JobModel
         } else {
             return false;
         }
+    } catch (\Throwable $th) {
+        echo "/n\$th-ajay 💀<pre>";
+        print_r($th);
+        echo "\n</pre>";
+        exit;
+        //throw $th;
     }
+}
+
 
 
     public function withdrawJobApplication($applicationId)

@@ -15,7 +15,27 @@ class Database
             $this->createDatabaseIfNotExists();
             $this->conn->exec("USE {$this->database}");
         } catch (PDOException $e) {
-            echo "Connection failed: " . $e->getMessage();
+            
+            echo "<div class='container' style='
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 8px;
+            font-family: sans-serif;
+         
+    background: radial-gradient(#fff511, #eaae03);
+              '>
+            <div class='card-header'>
+              Hiii
+            </div>
+            <div class='card-body'>
+              <blockquote class='blockquote mb-0'>
+                <p>".$e->getMessage()."</p>
+                <footer class='blockquote-footer'><cite title='Source Title'>Connection Failed!</cite></footer>
+              </blockquote>
+            </div>
+          </div>";
         }
     }
 

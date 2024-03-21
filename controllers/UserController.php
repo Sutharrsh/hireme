@@ -1,4 +1,7 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 class UserController
 {
     private $userModel;
@@ -11,13 +14,49 @@ class UserController
         $this->JobApplicationModel = $JobApplicationModel;
         $this->JobModel = $JobModel;
     }
+    public function sendMail($email, $subject, $message)
+    {
+        try {
+            //code...
+            $mail = new PHPMailer();
 
-    public function registerUser($username, $email, $password,$role)
+            // Set up SMTP
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = '';
+            $mail->Password = '';
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
+
+            // Set up email content
+            $mail->setFrom('support@jobify.co', $email);
+            $mail->addAddress($email);
+            $mail->Subject = $subject;
+            $mail->isHTML(true);
+            $mail->Body = $message;
+
+            // Send the email
+            if ($mail->send()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (\Throwable $th) {
+            echo "/n\$th-ajay 💀<pre>";
+            print_r($th);
+            echo "\n</pre>";
+            exit;
+            //throw $th;
+        }
+
+    }
+    public function registerUser($username, $email, $password, $role)
     {
         // Example: Register a new user
         $token = $this->generateUserToken(); // Generate a user token
-        $user = $this->userModel->registerUser($username, $email, $password,$role);
-        
+        $user = $this->userModel->registerUser($username, $email, $password, $role);
+
         // Start a new session (if not already started)
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
@@ -28,6 +67,53 @@ class UserController
         $_SESSION['username'] = $username;
         $_SESSION['user_id'] = $user;
         $_SESSION['role'] = $role;
+        $subject = "Welcome to Jobify!";
+        $message = '
+        
+        <body style="   font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;">
+            <div class="container" style=" max-width: 600px;
+            margin: 20px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+                <div class="logo" style="  text-align: center;
+                margin-bottom: 30px;">
+                    <img src="https://i0.wp.com/www.writefromscratch.com/wp-content/uploads/2018/12/demo-logo.png?fit=539%2C244&ssl=1&w=640" alt="Jobify Logo" style=" max-width: 120px;
+                    height: auto;">
+                </div>
+                <h2 style=" color: #333333;
+                margin-bottom: 20px;">Dear ' . $username . ',</h2>
+                <p style="   color: #666666;
+                margin-bottom: 15px;
+                line-height: 1.6;">Welcome to Jobify! We"re thrilled to have you on board.</p>
+                <p style="   color: #666666;
+                margin-bottom: 15px;
+                line-height: 1.6;">Thank you for registering with us. Your interest in joining our community means a lot to us.</p>
+                <p style="   color: #666666;
+                margin-bottom: 15px;
+                line-height: 1.6;">At Jobify, we"re committed to helping you find meaningful opportunities that align with your goals and aspirations.</p>
+                <p style="   color: #666666;
+                margin-bottom: 15px;
+                line-height: 1.6;">If you have any questions or need assistance, feel free to reach out to our support team. We"re here to help!</p>
+                <div class="footer" style=" margin-top: 30px;
+                text-align: center;
+                color: #999999;
+                font-size: 14px;">
+                    <p>Best regards,</p>
+                    <p>The Jobify Team</p>
+                </div>
+            </div>
+        </body>
+    
+        
+        
+        ';
+
+        $this->sendMail($email, $subject, $message);
         // Redirect the user to the index page
         header("Location: index.php");
         exit();
@@ -72,6 +158,7 @@ class UserController
                 if (session_status() == PHP_SESSION_NONE) {
                     session_start();
                 }
+              
                 header("Location: index.php");
                 exit();
             }
@@ -106,6 +193,38 @@ class UserController
             if (session_status() == PHP_SESSION_NONE) {
                 session_start();
             }
+
+            $data = $this->userModel->getUsers();
+            foreach ($data as $key => $value) {
+                if ($value['role'] == 'user') {
+                    $subject = "New Job Position Available!";
+                    $message = '<body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f9f9f9;">
+            <div class="container" style="max-width: 600px; margin: 20px auto; padding: 30px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+                <div class="logo" style="text-align: center; margin-bottom: 30px;">
+                    <img src="https://i0.wp.com/www.writefromscratch.com/wp-content/uploads/2018/12/demo-logo.png?fit=539%2C244&ssl=1&w=640" alt="Jobify Logo" style="max-width: 120px; height: auto;">
+                </div>
+                <h2 style="color: #333333; margin-bottom: 20px;">Dear ' . $value['username'] . '</h2>
+                <p style="color: #666666; margin-bottom: 15px; line-height: 1.6;">Welcome to Jobify! We are thrilled to have you on board.</p>
+                <p style="color: #666666; margin-bottom: 15px; line-height: 1.6;">Thank you for registering with us. Your interest in joining our community means a lot to us.</p>
+                <p style="color: #666666; margin-bottom: 15px; line-height: 1.6;">We are excited to inform you about new job opportunities available in your area. Take a look at the latest openings:</p>
+                <!-- Insert dynamic job listings here -->
+                <ul style="color: #666666; margin-bottom: 15px; line-height: 1.6;">
+                    <li>Job Title 1 - Company Name 1</li>
+                    <li>Job Title 2 - Company Name 2</li>
+                    <li>Job Title 3 - Company Name 3</li>
+                </ul>
+                <p style="color: #666666; margin-bottom: 15px; line-height: 1.6;">If you find a job that interests you, dont hesitate to apply!</p>
+                <p style="color: #666666; margin-bottom: 15px; line-height: 1.6;">If you have any questions or need assistance, feel free to reach out to our support team. We are here to help!</p>
+                <div class="footer" style="margin-top: 30px; text-align: center; color: #999999; font-size: 14px;">
+                    <p>Best regards,</p>
+                    <p>The Jobify Team</p>
+                </div>
+            </div>
+        </body>
+        ';
+                    $this->sendMail($value['email'], $subject, $message);
+                }
+            }
             echo 'job created';
         }
     }
@@ -117,7 +236,18 @@ class UserController
             if (session_status() == PHP_SESSION_NONE) {
                 session_start();
             }
-            echo 'job updated';
+            echo '<script>
+            Swal.fire({
+                title: "Great!",
+                text: "Your Job Is Updated!!",
+                icon: "success"
+            }).then(() => {
+                setTimeout(function() {
+                    window.location.href = "?action=index";
+                }); // Redirect after 2 seconds
+            });
+        </script>';
+            exit();
         }
     }
     public function GetJobs($employerId)
@@ -151,7 +281,17 @@ class UserController
     {
         $data = $this->JobModel->applyForJob($jobId, $userId, $content);
         if ($data) {
-            echo '<script>alert("Job Applied!")</script>';
+            echo '<script>
+            Swal.fire({
+                title: "Joob Procced!",
+                text: "Application Applied Successfully!",
+                icon: "success"
+            }).then(() => {
+                setTimeout(function() {
+                    window.location.href = "?action=index";
+                }); // Redirect after 2 seconds
+            });
+        </script>';
             exit();
         }
         echo '<script>alert("Job Apply Failed!")</script>';
@@ -161,11 +301,113 @@ class UserController
     {
         return $this->JobModel->selectApply($jobId, $userId);
     }
+    public function AllEmployeeDetails()
+    {
+        try {
+            //code...
+            return $this->userModel->getEmployeeDetails();
+        } catch (\Throwable $th) {
+            echo "/n\$th-ajay 💀<pre>"; print_r($th); echo "\n</pre>";exit;
+            //throw $th;
+        }
+    }
+    public function appliedJobs($user)
+    {
+        return $this->userModel->getjobDetails($user);
+    }
+    public function RejectAplication($job_id, $user_id, $reason)
+    {
+        $data = $this->userModel->rejectApplication($job_id, $user_id, $reason);
+        if ($data) {
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+            echo '<script>
+            Swal.fire({
+                title: "Rejection Procced!",
+                text: "Application Successfully Rejected!",
+                icon: "success"
+            }).then(() => {
+                setTimeout(function() {
+                    window.location.href = "?action=index";
+                }); // Redirect after 2 seconds
+            });
+        </script>';
+            exit();
+        }
+    }
+    public function acceptAplication($job_id, $user_id)
+    {
+        $data = $this->userModel->acceptJobApplication($job_id, $user_id);
+        if ($data) {
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+            echo '<script>
+            Swal.fire({
+                title: "congratulations!",
+                text: "your job application is accepted! check mail for interview details!",
+                icon: "success"
+            }).then(() => {
+                setTimeout(function() {
+                    window.location.href = "?action=index";
+                }); // Redirect after 2 seconds
+            });
+        </script>';
+            exit();
+        }
+    }
     public function baseUrl()
     {
         $baseURL = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']) . '/';
         return $baseURL;
     }
+
+
+
+    public function ResetFunctions($email)
+    {
+        $data = $this->userModel->resetPassword($email);
+        if ($data) {
+            $subject = "Password Reset Request";
+            $message = "Click the following link to reset your password: $data";
+            // Send the email (you can use PHPMailer or another library)
+            $send = $this->sendMail($email, $subject, $message);
+
+            if ($send) {
+                echo '<script>
+                Swal.fire({
+                    title: "congratulations!",
+                    text: "Reset link is sent to your email",
+                    icon: "success"
+                }).then(() => {
+                    setTimeout(function() {
+                        window.location.href = "?action=index";
+                    }); // Redirect after 2 seconds
+                });
+                </script>';
+                exit();
+            } else {
+                echo "Failed to send email";
+            }
+        } else {
+            echo "No data found";
+        }
+    }
+    public function VerifyPassword($token, $password)
+    {
+        try {
+            //code...
+            return $this->userModel->verifyToken($token, $password);
+        } catch (\Throwable $th) {
+            echo "/n\$th-ajay 💀<pre>";
+            print_r($th);
+            echo "\n</pre>";
+            exit;
+            //throw $th;
+        }
+    }
+
     // Add more methods for other user-related actions
 }
 

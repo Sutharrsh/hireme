@@ -7,9 +7,21 @@ require_once 'services/AuthService.php'; // Assuming your Auth class is defined 
 $isLoggedIn = AuthService::isLoggedIn();
 
 ?>
+<style>
+    nav{
+        background: #142d4c; 
+        
+    box-shadow: 0px 2px 1px 7px #ccd1dddd;
+    }
+    .nav-link{
+        color: #ececec;
+    }
+    .navbar-brand{
+        color: #ececec;
+    }
+</style>
 
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <a class="navbar-brand" href="?action=index">Decode Forest</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -36,12 +48,18 @@ $isLoggedIn = AuthService::isLoggedIn();
                         <li class="nav-item">
                             <a class="nav-link" href="?action=profile-view">Profile View</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="?action=get-job-status">Job Status</a>
+                        </li>
                     <?php } else { ?>
                         <li class="nav-item">
                             <a class="nav-link" href="?action=add-job">Add Job Post</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="?action=job-view">View Job</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="?action=employees-detail">Job Request</a>
                         </li>
                     <?php } ?>
                     <li class="nav-item">

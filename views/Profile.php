@@ -21,6 +21,24 @@ $experienceYears = $userData['experience_years'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Application Form</title>
+    <style>
+     .container {
+            margin: auto;
+            /* padding-top: 50px; */
+            background: #142d4c; 
+            /* margin-top: 50px; */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 8px;
+            font-family: sans-serif;
+            color: #ececec;
+
+    box-shadow: 13px 13px 0px -2px #ccd1dddd;
+            padding: 2rem;
+        }
+</style>
 </head>
 
 <body>

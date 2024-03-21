@@ -72,9 +72,31 @@ switch ($action) {
         // Example: User registration form
         include 'views/logout.php';
         break;
+    case 'get-job-status':
+        // Example: User registration form
+        include 'views/GetApplied.php';
+        break;
+    case 'reject':
+        // Example: User registration form
+        if (isset ($_POST['job_id']) && isset ($_POST['user_id']) && isset ($_POST['reason'])) {
+            $userController->RejectAplication($_POST['job_id'], $_POST['user_id'], $_POST['reason']);
+        }
+        break;
     case 'profile-view':
         // Example: User registration form
         include 'views/ProfileView.php';
+        break;
+    case 'reset-password':
+        if (isset ($_POST['email'])) {
+            $userController->ResetFunctions($_POST['email']);
+        }
+        break;
+    case 'employees-detail':
+        // Example: User registration form
+        if (isset ($_GET['job_id']) && isset ($_GET['user_id'])) {
+            $userController->acceptAplication($_GET['job_id'], $_GET['user_id']);
+        }
+        include 'views/employeer/Showdata.php';
         break;
     case 'job-view':
         // Example: User registration form
@@ -82,14 +104,21 @@ switch ($action) {
         break;
     case 'process_registration':
         // Example: Process user registration form
-        $userController->registerUser($_POST['username'], $_POST['email'], $_POST['password'],$_POST['role']);
+        $userController->registerUser($_POST['username'], $_POST['email'], $_POST['password'], $_POST['role']);
         break;
     case 'login_process':
 
         // Example: Process user registration form
         $userController->loginUser($_POST['email'], $_POST['password']);
         break;
-
+    case 'forgot':
+        include 'views/forgot.php';
+        break;
+    case 'forgot-password':
+        // Example: Process user registration form
+      
+        $userController->VerifyPassword($_POST['token'], $_POST['password']);
+        break;
     case 'submit_application':
         $uploadDir = "uploads/";
         $resumePath = $dpPath = null;
@@ -131,7 +160,7 @@ switch ($action) {
         break;
     // Add more cases for other actions
     case 'apply-job':
-        $userController->applyForJob($_POST['job_id'],$_SESSION['user_id'] , $_POST['content']);
+        $userController->applyForJob($_POST['job_id'], $_SESSION['user_id'], $_POST['content']);
 
     default:
         echo "Invalid action";

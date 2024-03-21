@@ -35,7 +35,6 @@ $jobPosts = $userController->GetJobs($_SESSION['user_id']);
                             <a href="?action=add-job&id=<?php echo $jobPost['id'] ?>"
                                 class="btn btn-primary btn-sm mb-2">Edit</a>
                             <a href="#" class="btn btn-danger btn-sm mb-2">Delete</a>
-                            <a href="#" class="btn btn-success btn-sm mb-2">View</a>
                         </div>
                     </div>
                 </div>
