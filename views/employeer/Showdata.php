@@ -1,4 +1,11 @@
 <?php
+$isLoggedIn = AuthService::isLoggedIn();
+// If the user is not logged in, redirect them to the login page
+
+if (!$isLoggedIn || $_SESSION['role'] != 'employer') {
+    header("Location:?action=index");
+    exit();
+}
 $rowvalues = $userController->AllEmployeeDetails();
 ?>
 <style>

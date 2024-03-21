@@ -1,5 +1,11 @@
 <?php
+$isLoggedIn = AuthService::isLoggedIn();
+// If the user is not logged in, redirect them to the login page
 
+if (!$isLoggedIn || $_SESSION['role'] != 'user') {
+    header("Location:?action=index");
+    exit();
+}
 $jobApplication = $userController->getData($_SESSION['user_id']);
 
 

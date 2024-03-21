@@ -1,5 +1,13 @@
 <?php
-    $jobPost['id'] = $jobPost['thumbnail'] = $jobPost['salary'] = $jobPost['position'] = $jobPost['description'] = $jobPost['number_of_positions'] = NULL;
+
+$isLoggedIn = AuthService::isLoggedIn();
+// If the user is not logged in, redirect them to the login page
+
+if (!$isLoggedIn || $_SESSION['role'] != 'employer') {
+    header("Location:?action=index");
+    exit();
+}
+$jobPost['id'] = $jobPost['thumbnail'] = $jobPost['salary'] = $jobPost['position'] = $jobPost['description'] = $jobPost['number_of_positions'] = NULL;
 if(isset($_GET['id'])){
     $jobPost = $userController->GetJobId($_GET['id']);
 }
