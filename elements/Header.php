@@ -30,6 +30,7 @@ $isLoggedIn = AuthService::isLoggedIn();
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <?php if($_SESSION['role'] != 'admin') : ?>
                 <?php if (!$isLoggedIn) { ?>
                     <li class="nav-item">
                         <a class="nav-link" href="?action=register">Register</a>
@@ -68,13 +69,19 @@ $isLoggedIn = AuthService::isLoggedIn();
                             echo $data; ?>
                         </a>
                     </li>
-                <?php } ?>
-
-            </ul>
-            <form class="d-flex">
+                    <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
+                <?php } ?>
+                <?php else: ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?action=logout">Logout</a>
+                    </li>
+                <?php endif; ?>
+
+            </ul>
+        
         </div>
     </div>
 </nav>

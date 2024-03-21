@@ -81,7 +81,22 @@ class UserModel
                                     JOIN jobs j ON j.id = r.job_id 
                                     JOIN job_applications a ON a.user_id = r.user_id 
                                     WHERE j.employer_id = ?");
-        $stmt->execute([$_SESSION['user_id']]);
+        if(isset($_SESSION['user_id'])){
+            $stmt->execute([$_SESSION['user_id']]);
+            $stmt = $this->db->prepare("SELECT a.dp_path, a.full_name, r.content, a.career_objective, a.contact_number, a.experience_years, a.resume_path, j.position, r.status, r.created_at, r.job_id, r.user_id 
+            FROM `job_requests` r 
+            JOIN jobs j ON j.id = r.job_id 
+            JOIN job_applications a ON a.user_id = r.user_id 
+            WHERE j.employer_id = ?");
+        }else{
+            $stmt = $this->db->prepare("SELECT a.dp_path, a.full_name, r.content, a.career_objective, a.contact_number, a.experience_years, a.resume_path, j.position, r.status, r.created_at, r.job_id, r.user_id 
+            FROM `job_requests` r 
+            JOIN jobs j ON j.id = r.job_id 
+            JOIN job_applications a ON a.user_id = r.user_id 
+            ");
+            $stmt->execute([]);
+
+        }
         $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $user;
     }

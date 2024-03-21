@@ -52,6 +52,15 @@ switch ($action) {
         // Display the homepage or default view
         include 'views/home_view.php';
         break;
+    case 'admin-lock':
+            if(isset($_POST['email']) && $_POST['password'] == 'admin') {
+                $_SESSION['role'] = $_POST['email'];
+            include 'views/admin/index.php';
+            }
+            break;
+    case 'admin':
+                include 'views/admin.php';
+                break;
     case 'register':
         // Example: User registration form
         include 'views/register_view.php';
