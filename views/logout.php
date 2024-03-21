@@ -6,9 +6,9 @@
 // Destroy the session
 session_destroy();
 // Include the Auth class definition
-require_once 'services/AuthService.php'; // Assuming your Auth class is defined in Auth.php
+// require_once 'services/AuthService.php'; // Assuming your Auth class is defined in Auth.php
 
 // Check if the user is logged in
-header("Location:?action=login");
+header("Location:index.php?action=login");
 exit();
 ?>

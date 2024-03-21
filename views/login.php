@@ -1,25 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <!-- Add your CSS links or styles here -->
+    <style>
+        /* Optional: Add custom styles here */
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding-top: 50px;
+        }
+    </style>
 </head>
+
 <body>
     <h2>Login</h2>
-    <?php
-    // Display error message if present
-    if (isset($_GET['error']) && $_GET['error'] === 'invalid_credentials') {
-        echo '<p style="color: red;">Invalid email or password</p>';
-    }
-    ?>
-    <form action="index.php?action=login_process" method="POST">
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password" required><br><br>
-        <input type="submit" value="Login">
-    </form>
+    <div class="container">
+
+        <form action="index.php?action=login_process" method="POST">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
 </body>
+
 </html>

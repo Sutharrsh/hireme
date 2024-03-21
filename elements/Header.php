@@ -5,57 +5,58 @@ require_once 'services/AuthService.php'; // Assuming your Auth class is defined 
 
 // Check if the user is logged in
 $isLoggedIn = AuthService::isLoggedIn();
-// If the user is not logged in, redirect them to the login page
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Header</title>
-    <style>
-        /* Add your CSS styles for header here */
-        .header {
-            background-color: #333;
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-        }
-        .nav {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-        .nav li {
-            display: inline;
-            margin-right: 10px;
-        }
-        .nav li a {
-            color: #fff;
-            text-decoration: none;
-        }
-        .nav li a:hover {
-            text-decoration: underline;
-        }
-        .active {
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <ul class="nav">
-            <li><a href="?action=index">Home</a></li>
-            <?php if(!$isLoggedIn){ ?>
-            <li><a href="?action=register">Register</a></li>
-            <li><a href="?action=login">Login</a></li>
-            <?php }else{ ?>
-                <li><a href="?action=logout">Logout</a></li>
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="?action=index">Decode Forest</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <?php if (!$isLoggedIn) { ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?action=register">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?action=login">Login</a>
+                    </li>
+                <?php } else { ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?action=logout">Logout</a>
+                    </li>
+                    <?php if ($_SESSION['role'] == 'user') { ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="?action=profile">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="?action=profile-view">Profile View</a>
+                        </li>
+                    <?php } else { ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="?action=add-job">Add Job Post</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="?action=job-view">View Job</a>
+                        </li>
+                    <?php } ?>
+                    <li class="nav-item">
+                        <a class="nav-link">
+                            <?php $data = $_SESSION['role'] != 'admin' ? $_SESSION['username'] : $_SESSION['role'];
+                            echo $data; ?>
+                        </a>
+                    </li>
                 <?php } ?>
-            <li><a href="?action=profile">Profile</a></li>
-            <li><a href="?action=profile-view">Profile View</a></li>
-        </ul>
+
+            </ul>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
     </div>
-</body>
-</html>
+</nav>

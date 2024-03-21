@@ -6,5 +6,5 @@ $db = new Database();
 $conn = $db->getConnection();
 
 // Example usage of the UserController
-$userController = new UserController(new UserModel($conn),new JobApplicationModel($conn));
+$userController = new UserController(new UserModel($conn), new JobApplicationModel($conn), new JobModel($conn));
 ?>
