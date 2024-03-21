@@ -7,6 +7,7 @@ $rowvalues = $userController->AllEmployeeDetails();
         color: #9fd3c7;
     }
 </style>
+<?php if (!empty($rowvalues)) : ?>
 <div class="container mt-5">
 
     <ol class="breadcrumb">
@@ -83,3 +84,4 @@ $rowvalues = $userController->AllEmployeeDetails();
         </table>
     </div>
 </div>
+<?php endif; ?>
