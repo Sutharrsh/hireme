@@ -5,7 +5,9 @@ require_once 'services/AuthService.php'; // Assuming your Auth class is defined 
 
 // Check if the user is logged in
 $isLoggedIn = AuthService::isLoggedIn();
-
+if(isset($_SESSION['role']) && $_SESSION['role'] == 'admin'){
+    $isLoggedIn  = true;
+}
 ?>
 <style>
     nav{
@@ -30,19 +32,20 @@ $isLoggedIn = AuthService::isLoggedIn();
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <?php if($_SESSION['role'] != 'admin') : ?>
-                <?php if (!$isLoggedIn) { ?>
+               
+                <?php if (!$isLoggedIn || (!isset($_SESSION['role']) && $_SESSION['role'] != 'admin')) { ?>
+
                     <li class="nav-item">
                         <a class="nav-link" href="?action=register">Register</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="?action=login">Login</a>
                     </li>
-                <?php } else { ?>
+                <?php } else {  ?>
                     <li class="nav-item">
                         <a class="nav-link" href="?action=logout">Logout</a>
                     </li>
-                    <?php if ($_SESSION['role'] == 'user') { ?>
+                    <?php  if ($_SESSION['role'] == 'user') { ?>
                         <li class="nav-item">
                             <a class="nav-link" href="?action=profile">Profile</a>
                         </li>
@@ -52,7 +55,7 @@ $isLoggedIn = AuthService::isLoggedIn();
                         <li class="nav-item">
                             <a class="nav-link" href="?action=get-job-status">Job Status</a>
                         </li>
-                    <?php } else { ?>
+                    <?php } else if(isset($_SESSION['role']) && $_SESSION['role'] == 'employer') { ?>
                         <li class="nav-item">
                             <a class="nav-link" href="?action=add-job">Add Job Post</a>
                         </li>
@@ -74,11 +77,9 @@ $isLoggedIn = AuthService::isLoggedIn();
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
                 <?php } ?>
-                <?php else: ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?action=logout">Logout</a>
-                    </li>
-                <?php endif; ?>
+             
+             
+               
 
             </ul>
         
