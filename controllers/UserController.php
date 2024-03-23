@@ -24,8 +24,8 @@ class UserController
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
-            $mail->Username = '';
-            $mail->Password = '';
+            $mail->Username = 'help.jobify@gmail.com';
+            $mail->Password = 'jqmgrdycsrjbfvaw';
             $mail->SMTPSecure = 'tls';
             $mail->Port = 587;
 
