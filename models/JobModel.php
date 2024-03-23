@@ -15,12 +15,12 @@ class JobModel
         $query = "CREATE TABLE IF NOT EXISTS jobs (
             id INT AUTO_INCREMENT PRIMARY KEY,
             employer_id INT,
-            thumbnail VARCHAR(255),
-            salary DECIMAL(10, 2),
-            position VARCHAR(255) NOT NULL,
-            description TEXT,
+            thumbnail VARCHAR(255) NULL,
+            salary DECIMAL(10, 2) NULL,
+            position VARCHAR(255) NULL,
+            description TEXT NULL,
             post_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            number_of_positions INT,
+            number_of_positions INT NULL,
             status ENUM('verified', 'pending') DEFAULT 'pending',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -32,7 +32,7 @@ class JobModel
             job_id INT,
             user_id INT,
             status ENUM('pending', 'accepted', 'rejected') DEFAULT 'pending',
-            content TEXT,
+            content TEXT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         )";

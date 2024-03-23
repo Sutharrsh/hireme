@@ -7,6 +7,7 @@ if (!$isLoggedIn || $_SESSION['role'] != 'employer') {
     exit();
 }
 $rowvalues = $userController->AllEmployeeDetails();
+// echo json_encode($rowvalues);do;
 ?>
 <style>
     .breadcrumb a {

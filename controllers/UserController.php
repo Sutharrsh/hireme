@@ -407,7 +407,9 @@ class UserController
             //throw $th;
         }
     }
-
+    public function getEmployersCount(){
+        return $this->userModel->getEmployersCount();
+    }
     // Add more methods for other user-related actions
 }
 

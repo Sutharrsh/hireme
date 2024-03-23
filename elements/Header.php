@@ -5,9 +5,7 @@ require_once 'services/AuthService.php'; // Assuming your Auth class is defined 
 
 // Check if the user is logged in
 $isLoggedIn = AuthService::isLoggedIn();
-if(isset($_SESSION['role']) && $_SESSION['role'] == 'admin'){
-    $isLoggedIn  = true;
-}
+// echo $_SESSION['role'];die;
 ?>
 <style>
     nav{
@@ -33,8 +31,7 @@ if(isset($_SESSION['role']) && $_SESSION['role'] == 'admin'){
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                
-                <?php if (!$isLoggedIn || (!isset($_SESSION['role']) && $_SESSION['role'] != 'admin')) { ?>
-
+                <?php if (!$isLoggedIn) { ?>
                     <li class="nav-item">
                         <a class="nav-link" href="?action=register">Register</a>
                     </li>

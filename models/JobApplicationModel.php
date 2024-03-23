@@ -14,12 +14,12 @@ class JobApplicationModel
         $query = "CREATE TABLE IF NOT EXISTS job_applications (
             id INT AUTO_INCREMENT PRIMARY KEY,
             user_id INT,
-            dp_path VARCHAR(255) NOT NULL,
-            full_name VARCHAR(255) NOT NULL,
-            career_objective TEXT,
-            contact_number VARCHAR(20),
-            experience_years INT,
-            resume_path VARCHAR(255) NOT NULL
+            dp_path VARCHAR(255) NULL,
+            full_name VARCHAR(255)  NULL,
+            career_objective TEXT NULL,
+            contact_number VARCHAR(20) NULL,
+            experience_years INT NULL,
+            resume_path VARCHAR(255) NULL
         )";
         $this->db->exec($query);
     }

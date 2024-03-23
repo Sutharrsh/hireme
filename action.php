@@ -148,6 +148,7 @@ switch ($action) {
             }
         }
         $userController->completeProfile($_SESSION['user_id'], $dpPath, $_POST['full_name'], $_POST['career_objective'], $_POST['contact_number'], $_POST['experience_years'], $resumePath);
+        break;
     // Add more cases for other actions
     case 'job-post-processing':
         $uploadDir = "uploads/job-thumbnails/";

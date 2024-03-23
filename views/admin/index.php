@@ -3,9 +3,10 @@
 $rowvalues = $userController->AllEmployeeDetails();
 $employersCount = $employeesCount = $totalJobsCount = 10;
 // Get counts for employers, employees, and total jobs
-// $employersCount = $adminController->getEmployersCount();
-// $employeesCount = $adminController->getEmployeesCount();
-// $totalJobsCount = $adminController->getTotalJobsCount();
+// $employersCount = $userController->getEmployersCount();
+
+// $employeesCount = $userController->getEmployeesCount();
+// $totalJobsCount = $userController->getTotalJobsCount();
 ?>
 <div class="container mt-5">
     <div class="row">

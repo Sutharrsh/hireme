@@ -13,9 +13,9 @@ class UserModel
     {
         $query = "CREATE TABLE IF NOT EXISTS users (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            username VARCHAR(255) NOT NULL,
-            email VARCHAR(255) NOT NULL UNIQUE,
-            password_hash VARCHAR(255) NOT NULL,
+            username VARCHAR(255)  NULL,
+            email VARCHAR(255)  NULL UNIQUE,
+            password_hash VARCHAR(255)  NULL,
             role VARCHAR(50) DEFAULT 'user',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -24,9 +24,9 @@ class UserModel
 
         $query = "CREATE TABLE IF NOT EXISTS password_reset (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            email VARCHAR(255) NOT NULL,
-            token VARCHAR(255) NOT NULL,
-            expiration TIMESTAMP NOT NULL,
+            email VARCHAR(255)  NULL,
+            token VARCHAR(255)  NULL,
+            expiration TIMESTAMP  NULL,
             UNIQUE KEY unique_email (email),
             UNIQUE KEY unique_token (token)    
         )";
@@ -76,18 +76,22 @@ class UserModel
     }
     public function getEmployeeDetails()
     {
-        $stmt = $this->db->prepare("SELECT a.dp_path, a.full_name, r.content, a.career_objective, a.contact_number, a.experience_years, a.resume_path, j.position, r.status, r.created_at, r.job_id, r.user_id 
-                                    FROM `job_requests` r 
-                                    JOIN jobs j ON j.id = r.job_id 
-                                    JOIN job_applications a ON a.user_id = r.user_id 
-                                    WHERE j.employer_id = ?");
+        // $stmt = $this->db->prepare("SELECT a.dp_path, a.full_name, r.content, a.career_objective, a.contact_number, a.experience_years, a.resume_path, j.position, r.status, r.created_at, r.job_id, r.user_id 
+        //                             FROM `job_requests` r 
+        //                             JOIN jobs j ON j.id = r.job_id 
+        //                             JOIN job_applications a ON a.user_id = r.user_id 
+        //                             WHERE j.employer_id = ?");
+        // echo $_SESSION['user_id'];die;
         if(isset($_SESSION['user_id'])){
-            $stmt->execute([$_SESSION['user_id']]);
             $stmt = $this->db->prepare("SELECT a.dp_path, a.full_name, r.content, a.career_objective, a.contact_number, a.experience_years, a.resume_path, j.position, r.status, r.created_at, r.job_id, r.user_id 
             FROM `job_requests` r 
             JOIN jobs j ON j.id = r.job_id 
             JOIN job_applications a ON a.user_id = r.user_id 
             WHERE j.employer_id = ?");
+            $stmt->execute([$_SESSION['user_id']]);
+               $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            //    echo json_encode($user);die;
+               return $user;
         }else{
             $stmt = $this->db->prepare("SELECT a.dp_path, a.full_name, r.content, a.career_objective, a.contact_number, a.experience_years, a.resume_path, j.position, r.status, r.created_at, r.job_id, r.user_id 
             FROM `job_requests` r 
@@ -95,10 +99,12 @@ class UserModel
             JOIN job_applications a ON a.user_id = r.user_id 
             ");
             $stmt->execute([]);
+            $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $user;
 
         }
-        $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $user;
+        // $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // return $user;
     }
     
     public function getjobDetails($userID)
@@ -236,6 +242,14 @@ class UserModel
             //throw $th;
         }
 
+    }
+
+    public function getEmployersCount(){
+        $stmt = $this->db->prepare("SELECT count(*) FROM users WHERE role = 'employer'");
+        $stmt->execute([]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        return [$user]; // Return the user data if found, or false if not found
     }
 }
 
