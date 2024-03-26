@@ -225,7 +225,18 @@ class UserController
                     $this->sendMail($value['email'], $subject, $message);
                 }
             }
-            echo 'job created';
+            echo '<script>
+            Swal.fire({
+                title: "Great!",
+                text: "Your Job Is Create!!",
+                icon: "success"
+            }).then(() => {
+                setTimeout(function() {
+                    window.location.href = "?action=index";
+                }); // Redirect after 2 seconds
+            });
+        </script>';
+            exit();
         }
     }
     public function updateJobPost($jobId, $employerId, $thumbnail, $salary, $position, $description, $numberOfPositions)

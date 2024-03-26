@@ -10,6 +10,13 @@ $rowvalues = $userController->AllEmployeeDetails();
 // echo json_encode($rowvalues);do;
 ?>
 <style>
+       body{
+            background: url(public/bg.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    backdrop-filter: blur(2px);
+    background-position: center;
+        }
     .breadcrumb a {
         text-decoration: none;
         color: #9fd3c7;

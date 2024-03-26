@@ -15,7 +15,15 @@ if ($_SESSION['role'] == 'user') {
     $jobPosts = $userController->GetJobAll();
 }
 ?>
-
+<style>
+       body{
+            background: url(public/bg2.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    backdrop-filter: blur(2px);
+    background-position: center;
+        }
+</style>
 <?php if (!empty($jobPosts)): ?>
     <div class="container mt-5">
         <h2 class="text-center mb-4">Job Posts</h2>

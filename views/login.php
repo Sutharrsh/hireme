@@ -9,10 +9,17 @@
 
     <style>
         /* Your existing CSS styles */
+        body{
+            background: url(public/bg.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    backdrop-filter: blur(2px);
+    background-position: center;
+        }
         .container {
             max-width: 400px;
             margin: auto;
-            background: #142d4c;
+            background: #000;
             position: absolute;
             top: 50%;
             left: 50%;
@@ -20,7 +27,7 @@
             border-radius: 8px;
             font-family: sans-serif;
             color: #ececec;
-            box-shadow: 13px 13px 0px -2px #ccd1dddd;
+            /* box-shadow: 13px 13px 0px -2px #ccd1dddd; */
             padding: 2rem;
         }
         #forgotPasswordLink{
@@ -31,6 +38,7 @@
 
 <body>
     <div class="container">
+        <center><h2>Login</h2></center>
         <form action="index.php?action=login_process" method="POST">
             <div class="form-group">
                 <label for="email">Email:</label>

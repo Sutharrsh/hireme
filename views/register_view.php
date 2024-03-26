@@ -6,13 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Registration</title>
     <style>
-  
+   body{
+            background: url(public/bg.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    backdrop-filter: blur(2px);
+    background-position: center;
+        }
         /* Optional: Add custom styles here */
         .container {
             max-width: 400px;
             margin: auto;
             /* padding-top: 50px; */
-            background: #142d4c; 
+            background: #000; 
             /* margin-top: 50px; */
             position: absolute;
             top: 50%;
@@ -33,6 +39,7 @@
 <body>
 
     <div class="container">
+        <center><h1>Register</h1></center>
         <form action="index.php?action=process_registration" method="post">
             <div class="form-group">
                 <label for="username">Username:</label>

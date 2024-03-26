@@ -15,6 +15,13 @@ if(isset($_GET['id'])){
 
 ?>
 <style>
+       body{
+            background: url(public/bg2.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    backdrop-filter: blur(2px);
+    background-position: center;
+        }
    .container {
             margin: auto;
             /* padding-top: 50px; */

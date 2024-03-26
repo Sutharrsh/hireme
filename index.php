@@ -8,9 +8,7 @@
         
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        body{
-            background: #ececec; 
-        }
+      
         button{
             
             background-color: #9fd3c7 !important;

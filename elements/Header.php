@@ -9,12 +9,15 @@ $isLoggedIn = AuthService::isLoggedIn();
 ?>
 <style>
     nav{
-        background: #142d4c; 
-        
-    box-shadow: 0px 2px 1px 7px #ccd1dddd;
+        background: #000; 
+        padding: 2rem;
+    /* box-shadow: 0px 2px 1px 7px #ccd1dddd; */
     }
     .nav-link{
         color: #ececec;
+    }
+    .nav-link:hover{
+        color: #9fd3c7;
     }
     .navbar-brand{
         color: #ececec;

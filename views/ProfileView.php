@@ -29,6 +29,13 @@ if (!$isLoggedIn) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Applications</title>
     <style>
+           body{
+            background: url(public/bg.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    backdrop-filter: blur(2px);
+    background-position: center;
+        }
     .container{
         background: #ececec; 
     }
