@@ -219,7 +219,7 @@ class UserController
                             setTimeout(function() {
                                 window.location.href = '?action=profile';
                             }); // Redirect after 2 seconds
-                        });;
+                        });
                     </script>";
                 return; // Stop further execution
                 //  exit();
@@ -232,7 +232,17 @@ class UserController
                     session_start();
                 }
               
-                header("Location: index.php?action=profile-view");
+                echo "<script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Profile Updated!'
+                }).then(() => {
+                    setTimeout(function() {
+                        window.location.href = '?action=profile-view';
+                    }); // Redirect after 2 seconds
+                });
+            </script>";
+        return; // Stop further execution
                 exit();
             }
         } catch (Exception $e) {

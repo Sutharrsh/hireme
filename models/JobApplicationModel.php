@@ -57,6 +57,34 @@ class JobApplicationModel
                 // If application exists, update it
                 return $this->updateJobApplication($existingApplication['id'], $dpPath, $fullName, $careerObjective, $contactNumber, $experienceYears, $resumePath);
             } else {
+                  // Validation
+            $errors = [];
+
+            if (empty($dpPath)) {
+                $errors[] = "profile is required.";
+            }
+            if (empty($resumePath)) {
+                $errors[] = "resume is required.";
+            }
+            // Add more validation rules as needed
+
+            // If there are validation errors, display them using SweetAlert
+            if (!empty($errors)) {
+                $errorMessages = implode('\n', $errors);
+                echo "<script>
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Validation Error',
+                            text: '$errorMessages',
+                        }).then(() => {
+                            setTimeout(function() {
+                                window.location.href = '?action=profile';
+                            }); // Redirect after 2 seconds
+                        });;
+                    </script>";
+                return; // Stop further execution
+                //  exit();
+            }
                 // If application doesn't exist, insert a new one
                 return $this->insertJobApplication($userId, $dpPath, $fullName, $careerObjective, $contactNumber, $experienceYears, $resumePath);
             }

@@ -93,6 +93,7 @@ $jobApplication = $userController->getData($user_id);
 </head>
 <body>
     <div class="container">
+        <?php if($jobApplication) : ?>
         <div class="profile-header">
             <img src="<?php echo $jobApplication['dp_path']; ?>" alt="Profile Picture">
             <h2><?php echo $jobApplication['full_name']; ?></h2>
@@ -104,6 +105,11 @@ $jobApplication = $userController->getData($user_id);
             <p><strong>Experience Years:</strong> <?php echo $jobApplication['experience_years']; ?></p>
             <p><strong>Resume:</strong> <a href="<?php echo $jobApplication['resume_path']; ?>" target="_blank">View Resume <i class="fas fa-external-link-alt"></i></a></p>
         </div>
+        <?php else: ?>
+            <div class="profile-header">
+            <p>No Data Found!</p>
+        </div>
+        <?php endif; ?>
     </div>
 </body>
 </html>
