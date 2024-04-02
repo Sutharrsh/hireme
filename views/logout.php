@@ -1,14 +1,24 @@
 <?php
 // Start the session
+session_start();
 
 // Unset all session variables
+$_SESSION = [];
 
 // Destroy the session
 session_destroy();
-// Include the Auth class definition
-// require_once 'services/AuthService.php'; // Assuming your Auth class is defined in Auth.php
 
-// Check if the user is logged in
-header("Location:index.php?action=login");
+// Display SweetAlert alert
+echo "<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Logged Out',
+        text: 'You have been successfully logged out!',
+        showConfirmButton: false,
+        timer: 1500
+    }).then(() => {
+        window.location.href = '?action=login';
+    });
+</script>";
 exit();
 ?>

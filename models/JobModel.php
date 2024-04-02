@@ -56,6 +56,12 @@ class JobModel
 
     public function updateJob($jobId, $employerId, $thumbnail, $salary, $position, $description, $numberOfPositions)
     {
+             // print_r($thumbnail);die;
+                $existingJob = $this->getJobByEmployerAndPosition($employerId, $position);
+                // print_r($existingJob);die;
+             if(!$thumbnail){
+                $thumbnail = $existingJob[0]['thumbnail'];
+            }
         $stmt = $this->db->prepare("UPDATE jobs SET employer_id = ?, thumbnail = ?, salary = ?, position = ?, description = ?, number_of_positions = ? WHERE id = ?");
         return $stmt->execute([$employerId, $thumbnail, $salary, $position, $description, $numberOfPositions, $jobId]);
     }
@@ -66,6 +72,10 @@ class JobModel
 
         if ($existingJob) {
             // Job already exists, update it
+            // print_r($thumbnail);die;
+            if(!$thumbnail){
+                $thumbnail = $existingJob[0]['thumbnail'];
+            }
             return $this->updateJob($existingJob['id'], $employerId, $thumbnail, $salary, $position, $description, $numberOfPositions);
         } else {
             // Job does not exist, create a new one
@@ -103,6 +113,19 @@ class JobModel
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        if ($data) {
+            return $data;
+        }
+        return false;
+    }
+    public function getSearch($data)
+    {
+        // print_r($search);
+
+        $stmt = $this->db->prepare("SELECT * FROM jobs where position LIKE '%$data%';");
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // print_r($data);die;
         if ($data) {
             return $data;
         }

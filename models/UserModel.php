@@ -110,17 +110,23 @@ class UserModel
     public function getjobDetails($userID)
     {
         try {
-            $stmt = $this->db->prepare("SELECT u.email, j.position, r.status ,rr.reason
-                                        FROM jobs j     
-                                        JOIN job_requests r ON r.job_id = j.id 
-                                        JOIN reject_reason rr ON rr.job_id = r.job_id 
-                                        JOIN users u ON u.id = j.employer_id 
-                                        WHERE r.user_id = ?");
+                        $stmt = $this->db->prepare("SELECT u.email, 
+                        j.position, 
+                        r.status, 
+                        CASE 
+                            WHEN r.status = 'reject' THEN (SELECT rr.reason FROM reject_reason rr WHERE rr.job_id = r.job_id)
+                            ELSE NULL 
+                        END AS reason 
+                FROM jobs j 
+                JOIN job_requests r ON r.job_id = j.id 
+                JOIN users u ON u.id = r.user_id 
+                WHERE u.id = ?");
             $stmt->execute([$userID]);
+
             $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $user;
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
         }
     }
 

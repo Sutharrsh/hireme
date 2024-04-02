@@ -36,11 +36,20 @@ function uploadFile($file, $uploadDir)
             return $targetFile;
         } else {
             throw new Exception("Sorry, there was an error uploading your file.");
+            
         }
     } catch (Exception $e) {
-        // Handle the exception
-        echo 'Error: ' . $e->getMessage();
-        return false;
+        echo "<script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{$e->getMessage()}',
+        }).then(() => {
+            setTimeout(function() {
+                window.location.href = '?action=index';
+            }); // Redirect after 2 seconds
+        });
+      </script>";
     }
 }
 

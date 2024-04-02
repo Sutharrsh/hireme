@@ -45,9 +45,15 @@ class JobApplicationModel
         try {
             // Check if the job application already exists for the user
             $existingApplication = $this->getJobApplicationById($userId);
-            // echo "/n\$userId-ajay 💀<pre>"; print_r($userId); echo "\n</pre>";exit;
-
+          
             if ($existingApplication) {
+                if(!$dpPath){
+                    $dpPath = $existingApplication['dp_path2'];
+                  
+                }
+                if(!$resumePath){
+                    $resumePath = $existingApplication['resume_path2'];
+                }
                 // If application exists, update it
                 return $this->updateJobApplication($existingApplication['id'], $dpPath, $fullName, $careerObjective, $contactNumber, $experienceYears, $resumePath);
             } else {
@@ -92,9 +98,11 @@ class JobApplicationModel
         $jobApplication = $stmt->fetch(PDO::FETCH_ASSOC);
         // foreach ($jobApplications as &$jobApplication) {
         if (!empty ($jobApplication)) {
-
+            $jobApplication['resume_path2']= $jobApplication['resume_path'];
+            $jobApplication['dp_path2']= $jobApplication['dp_path'];
             $jobApplication['dp_path'] = $baseURL . $jobApplication['dp_path'];
             $jobApplication['resume_path'] = $baseURL . $jobApplication['resume_path'];
+            
             // }
 
             return $jobApplication;

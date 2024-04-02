@@ -14,7 +14,7 @@ class UserController
         $this->JobApplicationModel = $JobApplicationModel;
         $this->JobModel = $JobModel;
     }
-    public function sendMail($email, $subject, $message)
+    public function  sendMail($email, $subject, $message)
     {
         try {
             //code...
@@ -146,11 +146,84 @@ class UserController
             exit();
         }
     }
-
+    public function calculateProfileCompleteness($userId)
+    {
+        // Fetch the user's profile from the database
+        if ($userId) {
+            $profile = $this->JobApplicationModel->getJobApplicationById($userId);
+       
+        }
+    
+        // Check if the profile exists and is not empty
+        if ($profile) {
+            $filledFields = 0;
+    
+            // Count the filled fields
+            if (!empty($profile['dp_path'])) {
+                $filledFields++;
+            }
+            if (!empty($profile['full_name'])) {
+                $filledFields++;
+            }
+            if (!empty($profile['career_objective'])) {
+                $filledFields++;
+            }
+            if (!empty($profile['contact_number'])) {
+                $filledFields++;
+            }
+            if (!empty($profile['experience_years'])) {
+                $filledFields++;
+            }
+            if (!empty($profile['resume_path'])) {
+                $filledFields++;
+            }
+    
+            // Calculate the profile completeness percentage
+            $totalFields = 6; // Total number of fields in the profile
+            $profileCompleteness = ($filledFields / $totalFields) * 100;
+    
+            return $profileCompleteness;
+        } else {
+          
+            return 0; // If the profile doesn't exist or is empty, completeness is 0%
+        }
+    }
+    
     public function completeProfile($userId, $dpPath, $fullName, $careerObjective, $contactNumber, $experienceYears, $resumePath)
     {
         try {
+            // Validation
+            $errors = [];
 
+            if (empty($fullName)) {
+                $errors[] = "Full name is required.";
+            } elseif (!preg_match('/^[A-Za-z\s]+$/', $fullName)) {
+                $errors[] = "Full name should only contain letters and spaces.";
+            }
+            if (empty($contactNumber)) {
+                $errors[] = "Contact number is required.";
+            } elseif (!preg_match('/^\d+$/', $contactNumber)) {
+                $errors[] = "Contact number should contain only numbers.";
+            }
+            // Add more validation rules as needed
+
+            // If there are validation errors, display them using SweetAlert
+            if (!empty($errors)) {
+                $errorMessages = implode('\n', $errors);
+                echo "<script>
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Validation Error',
+                            text: '$errorMessages',
+                        }).then(() => {
+                            setTimeout(function() {
+                                window.location.href = '?action=profile';
+                            }); // Redirect after 2 seconds
+                        });;
+                    </script>";
+                return; // Stop further execution
+                //  exit();
+            }
             $job = $this->JobApplicationModel->insertOrUpdateJobApplication($userId, $dpPath, $fullName, $careerObjective, $contactNumber, $experienceYears, $resumePath);
 
             if ($job) {
@@ -159,7 +232,7 @@ class UserController
                     session_start();
                 }
               
-                header("Location: index.php");
+                header("Location: index.php?action=profile-view");
                 exit();
             }
         } catch (Exception $e) {
@@ -188,6 +261,33 @@ class UserController
     }
     public function createJobPost($employerId, $thumbnail, $salary, $position, $description, $numberOfPositions)
     {
+        $errors = [];
+
+        if (empty($thumbnail)) {
+            $errors[] = "Thumbnail  is required.";
+        }
+        if (empty($salary)) {
+            $errors[] = "Esimated salary  is required.";
+        }
+        // Add more validation rules as needed
+
+        // If there are validation errors, display them using SweetAlert
+        if (!empty($errors)) {
+            $errorMessages = implode('\n', $errors);
+            echo "<script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        text: '$errorMessages',
+                    }).then(() => {
+                        setTimeout(function() {
+                            window.location.href = '?action=index';
+                        }); // Redirect after 2 seconds
+                    });;
+                </script>";
+            return; // Stop further execution
+            //  exit();
+        }
         $job = $this->JobModel->postJob($employerId, $thumbnail, $salary, $position, $description, $numberOfPositions);
         if ($job) {
             if (session_status() == PHP_SESSION_NONE) {
@@ -222,7 +322,7 @@ class UserController
             </div>
         </body>
         ';
-                    $this->sendMail($value['email'], $subject, $message);
+                    // $this->sendMail($value['email'], $subject, $message);
                 }
             }
             echo '<script>
@@ -288,8 +388,36 @@ class UserController
             //throw $th;
         }
     }
+
+    public function getSearch($search)
+    {
+        try {
+            //code...
+            return $this->JobModel->getSearch($search);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
     public function applyForJob($jobId, $userId, $content)
     {
+            // Calculate profile completeness
+        $per = $this->calculateProfileCompleteness($userId);
+
+        // If profile completeness is not 100%, display error using SweetAlert
+        if ($per !== 100) {
+            echo "<script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Profile Incomplete',
+                        text: 'Please complete your profile 100%.',
+                    }).then(() => {
+                        setTimeout(function() {
+                            window.location.href = '?action=index';
+                        }); // Redirect after 2 seconds
+                    });
+                </script>";
+            exit(); // Stop further execution
+        }
         $data = $this->JobModel->applyForJob($jobId, $userId, $content);
         if ($data) {
             echo '<script>
