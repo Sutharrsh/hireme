@@ -100,9 +100,7 @@ $isLoggedIn = AuthService::isLoggedIn();
                             <a class="nav-link" href="?action=login">Login</a>
                         </li>
                     <?php } else { ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="?action=logout">Logout</a>
-                        </li>
+                       
                         <?php if ($_SESSION['role'] == 'user') { ?>
                             <li class="nav-item">
                                 <a class="nav-link" href="?action=profile">Profile</a>
@@ -129,6 +127,9 @@ $isLoggedIn = AuthService::isLoggedIn();
                                 <?php $data = $_SESSION['role'] != 'admin' ? $_SESSION['username'] : $_SESSION['role'];
                                 echo $data; ?>
                             </a>
+                            <li class="nav-item">
+                            <a class="nav-link" href="?action=logout">Logout</a>
+                        </li>
                         </li>
                     <?php } ?>
                 </ul>
