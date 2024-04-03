@@ -59,6 +59,8 @@ $jobPosts = $userController->GetJobs($_SESSION['user_id']);
 <div class="container mt-5">
     <h2 class="text-center mb-4">Job Posts</h2>
     <div class="row">
+    <?php if($jobPosts) : ?>
+
         <?php foreach ($jobPosts as $jobPost): ?>
             <div class="col-md-4 mb-4">
                 <div class="card job-card h-100">
@@ -94,5 +96,10 @@ $jobPosts = $userController->GetJobs($_SESSION['user_id']);
                 </div>
             </div>
         <?php endforeach; ?>
+        <?php else: ?>
+                <div class="alert alert-danger" role="alert">
+                                            No data Found!
+                                        </div>
+            <?php endif; ?>
     </div>
 </div>

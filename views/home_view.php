@@ -128,6 +128,7 @@ if($_SESSION['role'] == 'user' && isset($_GET['search'])){
 <body>
     <div class="container">
         <div class="row">
+            <?php if($jobPosts) : ?>
             <?php foreach ($jobPosts as $jobPost): ?>
                 <div class="col-md-8 mb-4">
                     <div class="card h-100">
@@ -184,6 +185,11 @@ if($_SESSION['role'] == 'user' && isset($_GET['search'])){
                     </form>
                 </div>
             </div>
+            <?php endif; ?>
+            <?php else: ?>
+                <div class="alert alert-danger" role="alert">
+                                            No data Found!
+                                        </div>
             <?php endif; ?>
         </div>
     </div>
